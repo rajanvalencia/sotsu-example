@@ -29,7 +29,7 @@
 
             <!-- Validation Errors -->
             @if ($errors->any())
-                <div class="p-4 mb-4 text-red-800 bg-red-200 rounded-md">
+                <div class="p-4 my-4 text-red-800 bg-red-200 rounded-md">
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>

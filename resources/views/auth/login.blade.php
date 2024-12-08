@@ -11,17 +11,6 @@
         <section class="w-1/4 p-4 bg-white border rounded-lg shadow-lg border-neutral-300">
             <h1 class="mb-4 text-2xl font-bold">ログイン</h1>
 
-            <!-- Validation Errors -->
-            @if ($errors->any())
-                <div class="p-4 mb-4 text-red-800 bg-red-200 rounded-md">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ route('login') }}" method="POST" class="grid grid-flow-row gap-4">
                 @csrf
                 <input type="text" name="username" placeholder="Username"
@@ -33,6 +22,17 @@
                     ログイン
                 </button>
             </form>
+
+            <!-- Validation Errors -->
+            @if ($errors->any())
+                <div class="p-4 my-4 text-red-800 bg-red-200 rounded-md">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <div class="mt-4">
                 <a href="{{ route('signup') }}" class="text-blue-500 hover:underline">アカウントをお持ちでない方は登録してください</a>
