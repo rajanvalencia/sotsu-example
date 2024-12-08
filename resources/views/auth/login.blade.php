@@ -6,7 +6,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="w-screen bg-white">
+<body class="bg-neutral-50 text-neutral-700">
     <main class="flex items-start justify-center w-full h-screen p-20">
         <section class="w-1/4 p-4 bg-white border rounded-lg shadow-lg border-neutral-300">
             <h1 class="mb-4 text-2xl font-bold">ログイン</h1>
