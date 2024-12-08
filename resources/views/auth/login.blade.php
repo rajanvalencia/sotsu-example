@@ -33,6 +33,10 @@
                     ログイン
                 </button>
             </form>
+
+            <div class="mt-4">
+                <a href="{{ route('signup') }}" class="text-blue-500 hover:underline">アカウントをお持ちでない方は登録してください</a>
+            </div>
         </section>
     </main>
 </body>
