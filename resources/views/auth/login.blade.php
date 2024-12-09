@@ -13,6 +13,7 @@
 
             <form action="{{ route('login') }}" method="POST" class="grid grid-flow-row gap-4">
                 @csrf
+
                 <input type="text" name="username" placeholder="Username"
                     class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
                 <input type="password" name="password" placeholder="Password"

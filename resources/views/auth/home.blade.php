@@ -10,6 +10,7 @@
     <header class="flex justify-end h-16 px-5 py-2 border border-b-neutral-200">
         <form action="{{ route('logout') }}" method="POST" class="flex items-center justify-end w-full h-full">
             @csrf
+
             <button type="submit"
                 class="w-24 h-full bg-white border rounded-md border-neutral-700 hover:text-neutral-100 hover:bg-neutral-700">
                 <h2>ログアウト</h2>
