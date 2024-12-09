@@ -35,7 +35,36 @@
     </header>
     <main class="flex items-start justify-center w-full h-screen p-20">
         <section class="w-1/3 p-4 bg-white border rounded-lg shadow-lg border-neutral-300">
-            <h1 class="text-2xl font-bold">{{ $category->category_name }}</h1>
+            <h1 class="mb-4 text-2xl font-bold">{{ $category->category_name }}</h1>
+
+            <div class="grid grid-flow-row gap-4">
+                @foreach ($questions as $question)
+                    <div class="p-4 border rounded-md border-neutral-300">
+                        <h2 class="mb-4 text-xl">{{ $question->question }}</h2>
+
+                        @php
+                            // Decode the options from JSON to an array
+                            $options = json_decode($question->options, true);
+                        @endphp
+
+                        <ul class="w-full border rounded-md border-neutral-300">
+                            @foreach ($options as $option)
+                                <li
+                                    class="w-full border-b border-neutral-300 hover:cursor-pointer hover:bg-neutral-100">
+                                    <div class="flex items-center ps-3">
+                                        <input id="{{ $option }}" type="radio" name="answer"
+                                            value="{{ $option }}"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="{{ $option }}"
+                                            class="w-full py-3 text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">{{ $option }}</label>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endforeach
+            </div>
+
         </section>
     </main>
 </body>
