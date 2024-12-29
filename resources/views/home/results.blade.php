@@ -67,6 +67,10 @@
             data: chartData,
             options: {
                 responsive: true,
+                animation: {
+                    duration: 2000, // Set animation duration (e.g., 2000ms = 2 seconds)
+                    easing: 'easeOutBounce', // Choose a slower easing function
+                },
                 scales: {
                     y: {
                         beginAtZero: true, // Start Y-axis at 0
