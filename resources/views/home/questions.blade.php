@@ -50,10 +50,11 @@
 
                         <ul class="w-full border rounded-md border-neutral-300">
                             @foreach ($question->options as $option)
-                                <li class="w-full border-b border-neutral-300 hover:bg-neutral-100">
+                                <li class="w-full border-b border-neutral-300 hover:bg-neutral-100"
+                                    onclick="document.getElementById('option_{{ $option }}').checked = true;">
                                     <div class="flex items-center p-2 cursor-pointer">
-                                        <input id="question_id_{{ $question->id }}" type="radio"
-                                            name="{{ $question->id }}" value="{{ $option }}"
+                                        <input id="option_{{ $option }}" type="radio" name="{{ $question->id }}"
+                                            value="{{ $option }}"
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 cursor-pointer focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                                             required>
                                         <label for="{{ $option }}"
