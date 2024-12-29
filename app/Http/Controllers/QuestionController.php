@@ -3,35 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
 {
-    public function showCreateCategoryForm()
+    public function showCreateQuestionForm()
     {
 
         $user = Auth::user();
 
-        return view('home.create-category', compact('user'));
+        $categories = Category::all();
+
+        return view('home.create-question', compact('user', 'categories'));
     }
 
-    public function createCategory(Request $request)
+    public function createQuestion(Request $request)
     {
 
         // Validate the incoming request
         $request->validate([
-            'category_name' => 'required|string|max:255|unique:categories', // Ensure the category name is unique
+            'category_id' => 'required|exists:categories,id', // Ensure category exists
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string|max:255',
+            'option_1' => 'required|string|max:255',
+            'option_2' => 'required|string|max:255',
+            'option_3' => 'nullable|string|max:255',  // Make this optional
+            'option_4' => 'nullable|string|max:255',  // Make this optional
         ]);
 
-        // Create a new category
-        $category = new Category;
-        $category->category_name = $request->category_name;
-        $category->save(); // Save the category to the database
+        // Combine the options into an array
+        $options = [
+            $request->input('option_1'),
+            $request->input('option_2'),
+            $request->input('option_3'),
+            $request->input('option_4'),
+        ];
 
-        // Redirect to a success page or back with a success message
-        return redirect()->route('create-category')->with('success', 'カテゴリを作成しました。');
+        // Filter out any empty options (if option_3 or option_4 are not provided)
+        $options = array_filter($options, function ($value) {
+            return !empty($value);
+        });
 
+        // Create the new question
+        $question = Question::create([
+            'question' => $request->input('question'),
+            'answer' => $request->input('answer'),
+            'options' => json_encode(array_values($options)),  // Store options as JSON
+            'category_id' => $request->input('category_id'),
+        ]);
+        $question->save();
+
+        return redirect()->route('create-question')->with('success', '問題を作成しました。');
     }
 
     public function getQuestions(string $category_id)
@@ -47,7 +72,10 @@ class QuestionController extends Controller
             abort(404, 'Category not found');
         }
 
+        // Retrieve all questions that belong to this category
+        $questions = $category->questions; // This assumes you have the relationship defined in the Category model
+
         // Pass the category to the view
-        return view('home.questions', compact('user', 'category'));
+        return view('home.questions', compact('user', 'category', 'questions'));
     }
 }

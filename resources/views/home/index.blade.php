@@ -7,8 +7,8 @@
 </head>
 
 <body class="bg-neutral-50 text-neutral-700">
-    <header class="flex justify-end h-16 px-5 py-2 border border-b-neutral-200">
-        <div class="grid grid-cols-[1fr,8rem,8rem] gap-4">
+    <header class="sticky top-0 flex justify-end h-16 px-5 py-2 border border-b-neutral-200">
+        <div class="grid grid-cols-[1fr,8rem,8rem,8rem] gap-4">
 
             <!-- ユーザー -->
             <div class="flex items-center justify-center w-full">
@@ -20,6 +20,12 @@
             <button type="button" onclick="window.location='{{ route('create-category') }}'"
                 class="w-32 px-2 bg-white border rounded-md hover:text-neutral-100 hover:bg-neutral-700 border-neutral-700 hover:cursor-pointer">
                 カテゴリ作成
+            </button>
+
+            <!-- 問題作成 -->
+            <button type="button" onclick="window.location='{{ route('create-question') }}'"
+                class="w-32 px-2 bg-white border rounded-md hover:text-neutral-100 hover:bg-neutral-700 border-neutral-700 hover:cursor-pointer">
+                問題作成
             </button>
 
             <!-- ログアウト -->

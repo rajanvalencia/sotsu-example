@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title>カテゴリ作成</title>
+    <title>問題作成</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -43,13 +43,37 @@
         @endif
 
         <section class="w-full p-4 bg-white border rounded-lg shadow-lg border-neutral-300">
-            <h1 class="mb-4 text-2xl font-bold">カテゴリ作成</h1>
+            <h1 class="mb-4 text-2xl font-bold">問題作成</h1>
 
-            <form action="{{ route('create-category') }}" method="POST" class="grid grid-flow-row gap-4">
+            <form action="{{ route('create-question') }}" method="POST" class="grid grid-flow-row gap-4">
                 @csrf
 
-                <input type="text" name="category_name" placeholder="カテゴリ名"
+                <select name="category_id"
                     class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
+                    <option>カテゴリを選択</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                    @endforeach
+                </select>
+
+                <input type="text" name="question" placeholder="問題"
+                    class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
+
+                <input type="text" name="option_1" placeholder="オプション1"
+                    class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
+
+                <input type="text" name="option_2" placeholder="オプション2"
+                    class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
+
+                <input type="text" name="option_3" placeholder="オプション3"
+                    class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
+
+                <input type="text" name="option_4" placeholder="オプション4"
+                    class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
+
+                <input type="text" name="answer" placeholder="回答"
+                    class="w-full h-12 p-2 border border-gray-300 rounded-md outline-none focus:border-neutral-700 hover:border-neutral-700">
+
                 <button type="submit"
                     class="w-full h-12 bg-white border rounded-md border-neutral-700 hover:bg-neutral-700 hover:text-neutral-100">
                     作成
