@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Answer;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class ResultController extends Controller
 {
@@ -19,34 +17,31 @@ class ResultController extends Controller
             abort(404, 'Category not found');
         }
 
-        $answerSessions = $category->getAnswerSessionsByUserIdAndCategoryId($user->id, $category_id);
+        $result = $category->getNewestResultByUserIdAndCategoryId($user->id, $category_id);
 
-        $results = [];
+        $results = $category->getResultsByUserIdAndCategoryId($user->id, $category_id);
 
-        foreach ($answerSessions as $answerSession) {
-            $answers = Answer::where('answer_session_id', $answerSession->id)->get();
+        /**
+         * Chart.js Bar Chart Data
+         * https://www.chartjs.org/docs/latest/getting-started/
+         */
+        $graph_data = [
+            'labels' => $results->map(function ($result) {
+                return $result['datetime'];
+            })->toArray(),
+            'datasets' => [
+                [
+                    'label' => '正答率',
+                    'data' => $results->map(function ($result) {
+                        return $result['correct_answer_rate'];
+                    })->toArray(),
+                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
+                    'borderColor' => 'rgba(75, 192, 192, 1)',
+                    'borderWidth' => 1,
+                ],
+            ],
+        ];
 
-            Log::info($answers->all());
-
-            $totalAnswers = 0;
-            $totalCorrectAnswers = 0;
-            $percentageCorrectAnswers = 0;
-            foreach ($answers as $answer) {
-                if ($answer->is_correct) {
-                    $totalCorrectAnswers++;
-                }
-                $totalAnswers++;
-            }
-
-            $results[] = [
-                'category_name' => $answerSession->category->category_name,
-                'total_answers' => $totalAnswers,
-                'total_correct_answers' => $totalCorrectAnswers,
-                'correct_answer_rate' => round(($totalCorrectAnswers / $totalAnswers) * 100, 0),
-                'datetime' => $answerSession->created_at,
-            ];
-        }
-
-        return view('home.results', compact('user', 'category', 'results'));
+        return view('home.results', compact('user', 'category', 'result', 'graph_data'));
     }
 }

@@ -77,7 +77,6 @@ class QuestionController extends Controller
             // Explode the 'options' string back into an array
             $question->options = explode(',', $question->options);
 
-
             return $question;
         });
 

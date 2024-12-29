@@ -4,6 +4,9 @@
 <head>
     <title>問題</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-neutral-50 text-neutral-700">
@@ -37,18 +40,58 @@
         <section class="w-full p-4 bg-white border rounded-lg shadow-lg md:w-4/5 2xl:w-1/3 border-neutral-300">
             <h1 class="mb-4 text-2xl font-bold">{{ $category->category_name }}</h1>
 
-            <div class="grid grid-flow-row gap-4">
-                @foreach ($results as $result)
-                    <p>問題数 : {{ $result['total_answers'] }}</p>
-                    <p>正解数 : {{ $result['total_correct_answers'] }}</p>
-                    <p>正答率 : {{ $result['correct_answer_rate'] }}%</p>
-                    <p>回答時間 : {{ $result['datetime'] }}</p>
-                    ------------------
-                @endforeach
+            <div class="grid grid-flow-row gap-4 pb-6">
+                <p>問題数 : {{ $result['total_answers'] }}</p>
+                <p>正解数 : {{ $result['total_correct_answers'] }}</p>
+                <p>正答率 : {{ $result['correct_answer_rate'] }}%</p>
+                <p>回答時間 : {{ $result['datetime'] }}</p>
+            </div>
+
+            <!-- Chart.js Bar Chart -->
+            <div style="w-full mx-auto">
+                <canvas id="graph" width="600" height="400"></canvas>
             </div>
 
         </section>
     </main>
+
+
+    <!-- Chart.js Bar Chart -->
+    <!-- https://www.chartjs.org/docs/latest/getting-started/ -->
+    <script>
+        const chartData = @json($graph_data);
+
+        const ctx = document.getElementById('graph').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar', // Bar chart type
+            data: chartData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true, // Start Y-axis at 0
+                        max: 100, // Set max value to 100
+                        min: 0, // Set min value to 0
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%'; // Append '%' to the tick values
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw; // Get the raw value
+                                return value + '%'; // Append '%' to the tooltip value
+                            }
+                        }
+                    }
+                }
+            },
+        });
+    </script>
 </body>
 
 </html>

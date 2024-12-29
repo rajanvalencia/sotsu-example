@@ -4,6 +4,9 @@
 <head>
     <title>HOME</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-neutral-50 text-neutral-700">
@@ -42,11 +45,47 @@
     <main class="grid w-full grid-cols-3 gap-12 px-40 py-20">
         @foreach ($categories as $category)
             <a href="{{ route('get-questions', ['category_id' => $category->id]) }}"
-                class="w-full p-4 transition-transform duration-300 bg-white border rounded-lg shadow-lg h-52 border-neutral-300 hover:cursor-pointer hover:scale-105">
+                class="w-full h-full p-4 transition-transform duration-300 bg-white border rounded-lg shadow-lg border-neutral-300 hover:cursor-pointer hover:scale-105">
                 <h1 class="text-3xl font-bold">{{ $category->category_name }}</h1>
+
+                <div style="w-full mx-auto h-full">
+                    <canvas id="graph_{{ $category->id }}" height="140"></canvas>
+                </div>
             </a>
         @endforeach
     </main>
+
+    <!-- Chart.js Bar Chart -->
+    <!-- https://www.chartjs.org/docs/latest/getting-started/ -->
+    <script>
+        @foreach ($graph_datas as $graph_data)
+
+            new Chart(document.getElementById('graph_{{ $graph_data['category_id'] }}').getContext('2d'), {
+                type: 'bar', // Bar chart type
+                data: @json($graph_data),
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Start Y-axis at 0
+                            max: 100, // Set max value to 100
+                            min: 0, // Set min value to 0
+                        },
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw; // Get the raw value
+                                    return value + '%'; // Append '%' to the tooltip value
+                                }
+                            }
+                        }
+                    }
+                },
+            });
+        @endforeach
+    </script>
 </body>
 
 </html>
