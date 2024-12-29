@@ -34,24 +34,25 @@ class QuestionController extends Controller
             'option_4' => 'nullable|string|max:255',  // Make this optional
         ]);
 
-        // Combine the options into an array
-        $options = [
+        // Collect all options into an array
+        $optionsArray = [
             $request->input('option_1'),
             $request->input('option_2'),
             $request->input('option_3'),
             $request->input('option_4'),
         ];
 
-        // Filter out any empty options (if option_3 or option_4 are not provided)
-        $options = array_filter($options, function ($value) {
-            return ! empty($value);
-        });
+        // Filter out blank (or empty) options
+        $filteredOptions = array_filter($optionsArray, fn ($option) => ! empty($option));
+
+        // Combine the filtered options into a comma-separated string
+        $options = implode(',', $filteredOptions);
 
         // Create the new question
         $question = Question::create([
             'question' => $request->input('question'),
             'answer' => $request->input('answer'),
-            'options' => json_encode(array_values($options)),  // Store options as JSON
+            'options' => $options,  // Store options as JSON
             'category_id' => $request->input('category_id'),
         ]);
         $question->save();
