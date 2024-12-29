@@ -47,13 +47,8 @@
                         <!-- Display as raw HTML -->
                         <h2 class="mb-4 text-xl">{!! $question->question !!}</h2>
 
-                        @php
-                            // Decode the options from JSON to an array
-                            $options = json_decode($question->options, true);
-                        @endphp
-
                         <ul class="w-full border rounded-md border-neutral-300">
-                            @foreach ($options as $option)
+                            @foreach ($question->options as $option)
                                 <li class="w-full border-b border-neutral-300 hover:bg-neutral-100">
                                     <div class="flex items-center p-2 cursor-pointer">
                                         <input id="question_id_{{ $question->id }}" type="radio"

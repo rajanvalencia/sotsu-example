@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
 {
@@ -60,7 +61,6 @@ class QuestionController extends Controller
 
     public function getQuestions(string $category_id)
     {
-
         $user = Auth::user();
 
         // Retrieve the category by its ID
@@ -72,9 +72,20 @@ class QuestionController extends Controller
         }
 
         // Retrieve all questions that belong to this category
-        $questions = $category->questions; // This assumes you have the relationship defined in the Category model
+        $questions = $category->questions->map(function ($question) {
 
-        // Pass the category to the view
+            // Explode the 'options' string back into an array
+            $question->options = explode(',', $question->options);
+
+
+            return $question;
+        });
+
+        foreach ($questions as $question) {
+            Log::info($question->options);
+        }
+
+        // Pass the category and questions to the view
         return view('home.questions', compact('user', 'category', 'questions'));
     }
 }
