@@ -21,4 +21,12 @@ class Question extends Model
     {
         return $this->belongsTo(Category::class); // A question belongs to one category
     }
+
+    /**
+     * Define the relationship with the Answer model.
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
 }

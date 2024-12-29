@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')
-                ->constrained() // Automatically references the 'id' column of the 'categories' table
-                ->onDelete('cascade'); // If a category is deleted, its associated questions will also be deleted
+            $table->foreignId('category_id') // The category that the question belongs to
+                ->constrained() // Automatically references the 'id' column of the 'answer_sessions' table
+                ->onDelete('cascade'); // If an answer session is deleted, its associated questions will also be deleted
             $table->string('question');
             $table->string('answer');
             $table->json('options');
