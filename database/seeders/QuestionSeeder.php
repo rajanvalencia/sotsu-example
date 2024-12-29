@@ -47,7 +47,7 @@ class QuestionSeeder extends Seeder
                 'category_id' => $n1Category->id,
             ],
             [
-                'question' => '住民が建設会社を相手に、</strong>訴訟</strong>を起こした。',
+                'question' => '住民が建設会社を相手に、<strong>訴訟</strong>を起こした。',
                 'answer' => 'そしょう',
                 'options' => 'そしょう,せきしょう,そこう,せっこう',
                 'category_id' => $n1Category->id,
@@ -81,7 +81,7 @@ class QuestionSeeder extends Seeder
 
             // JLPT N3 Questions
             [
-                'question' => 'この辺りは視界を遮る物が何もない。',
+                'question' => 'この辺りは視界を<strong>遮る</strong>物が何もない。',
                 'answer' => 'さえぎる',
                 'options' => 'さまたげる,さえぎる,せばめる,へだてる',
                 'category_id' => $n3Category->id,
