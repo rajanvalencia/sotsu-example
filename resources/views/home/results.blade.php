@@ -69,7 +69,7 @@
                 responsive: true,
                 animation: {
                     duration: 2000, // Set animation duration (e.g., 2000ms = 2 seconds)
-                    easing: 'easeOutBounce', // Choose a slower easing function
+                    easing: 'easeOutElastic', // Choose a slower easing function
                 },
                 scales: {
                     y: {
