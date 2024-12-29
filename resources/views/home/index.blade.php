@@ -44,14 +44,31 @@
     </header>
     <main class="grid w-full grid-cols-3 gap-12 px-40 py-20">
         @foreach ($categories as $category)
-            <a href="{{ route('get-questions', ['category_id' => $category->id]) }}"
-                class="w-full h-full p-4 transition-transform duration-300 bg-white border rounded-lg shadow-lg border-neutral-300 hover:cursor-pointer hover:scale-105">
-                <h1 class="text-3xl font-bold">{{ $category->category_name }}</h1>
+            @php
+                $hasQuestions = $category->questions->count() > 0;
+            @endphp
 
-                <div style="w-full mx-auto h-full">
-                    <canvas id="graph_{{ $category->id }}" height="140"></canvas>
-                </div>
-            </a>
+            @if ($hasQuestions)
+                <a href="{{ route('get-questions', ['category_id' => $category->id]) }}"
+                    class="w-full h-full p-4 transition-transform duration-300 bg-white border rounded-lg shadow-lg border-neutral-300 hover:cursor-pointer hover:scale-105">
+                    <h1 class="text-3xl font-bold">{{ $category->category_name }}</h1>
+
+                    <div style="w-full mx-auto h-full">
+                        <canvas id="graph_{{ $category->id }}" height="140"></canvas>
+                    </div>
+                </a>
+            @else
+                <a
+                    class="w-full h-full p-4 transition-transform duration-300 border rounded-lg shadow-lg bg-neutral-100 border-neutral-300 hover:cursor-pointer hover:scale-105">
+                    <h1 class="text-3xl font-bold">{{ $category->category_name }} </h1>
+
+                    <h2>問題がありません</h2>
+
+                    <div style="w-full mx-auto h-full">
+                        <canvas id="graph_{{ $category->id }}" height="140"></canvas>
+                    </div>
+                </a>
+            @endif
         @endforeach
     </main>
 
