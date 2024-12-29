@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
 {
@@ -44,7 +43,7 @@ class QuestionController extends Controller
 
         // Filter out any empty options (if option_3 or option_4 are not provided)
         $options = array_filter($options, function ($value) {
-            return !empty($value);
+            return ! empty($value);
         });
 
         // Create the new question
