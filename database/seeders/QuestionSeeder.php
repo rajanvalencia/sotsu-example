@@ -53,7 +53,7 @@ class QuestionSeeder extends Seeder
                 'category_id' => $n1Category->id,
             ],
             [
-                'question' => '私の主張は単なる<strong>(    )</strong>ではなく、確たる証拠に基づいている',
+                'question' => '私の主張は単なる<strong>〇〇</strong>ではなく、確たる証拠に基づいている',
                 'answer' => '推測',
                 'options' => '模索,思索,推測,推移',
                 'category_id' => $n1Category->id,
@@ -61,7 +61,7 @@ class QuestionSeeder extends Seeder
 
             // JLPT N2 Questions
             [
-                'question' => '事故の原因は、機械の<strong>(    )</strong>作動にあると考えられている。',
+                'question' => '事故の原因は、機械の<strong>〇〇</strong>作動にあると考えられている。',
                 'answer' => '誤',
                 'options' => '偽,誤,被,乱',
                 'category_id' => $n2Category->id,
