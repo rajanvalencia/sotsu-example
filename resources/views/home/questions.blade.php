@@ -42,6 +42,7 @@
                 @csrf
 
                 @foreach ($questions as $question)
+                    <!-- Question -->
                     <div class="py-2">
 
                         <!-- Display as raw HTML -->
