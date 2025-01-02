@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Category;
+use App\Models\Question;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
+class QuestionController extends Controller
+{
+    public function showCreateQuestionForm()
+    {
+
+        $user = Auth::user();
+
+        $categories = Category::all();
+
+        return view('home.create-question', compact('user', 'categories'));
+    }
+
+    public function createQuestion(Request $request)
+    {
+
+        // Validate the incoming request
+        $request->validate([
+            'category_id' => 'required|exists:categories,id', // Ensure category exists
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string|max:255',
+            'option_1' => 'required|string|max:255',
+            'option_2' => 'required|string|max:255',
+            'option_3' => 'nullable|string|max:255',  // Make this optional
+            'option_4' => 'nullable|string|max:255',  // Make this optional
+        ]);
+
+        // Collect all options into an array
+        $optionsArray = [
+            $request->input('option_1'),
+            $request->input('option_2'),
+            $request->input('option_3'),
+            $request->input('option_4'),
+        ];
+
+        // Filter out blank (or empty) options
+        $filteredOptions = array_filter($optionsArray, fn ($option) => ! empty($option));
+
+        // Combine the filtered options into a comma-separated string
+        $options = implode(',', $filteredOptions);
+
+        // Create the new question
+        $question = Question::create([
+            'question' => $request->input('question'),
+            'answer' => $request->input('answer'),
+            'options' => $options,  // Store options as JSON
+            'category_id' => $request->input('category_id'),
+        ]);
+        $question->save();
+
+        return redirect()->route('create-question')->with('success', '問題を作成しました。');
+    }
+
+    public function getQuestions(string $category_id)
+    {
+        $user = Auth::user();
+
+        // Retrieve the category by its ID
+        $category = Category::find($category_id);
+
+        // If category not found, return a 404 response
+        if (! $category) {
+            abort(404, 'Category not found');
+        }
+
+        // Retrieve all questions that belong to this category
+        $questions = $category->questions->map(function ($question) {
+
+            // Explode the 'options' string back into an array
+            $question->options = explode(',', $question->options);
+
+            return $question;
+        });
+
+        foreach ($questions as $question) {
+            Log::info($question->options);
+        }
+
+        // Pass the category and questions to the view
+        return view('home.questions', compact('user', 'category', 'questions'));
+    }
+}
